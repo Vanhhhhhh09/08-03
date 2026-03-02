@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>💕 Dành Cho Em</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rose:#e8748a;--blush:#f2c4ce;--petal:#fde8ed;
+  --deep:#6b2d42;--cream:#fff8f5;--gold:#c9956b;
+  --dark:#120810;--darkrose:#2d0a1e;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Cormorant Garamond',serif;background:var(--dark);color:var(--deep);overflow-x:hidden}
+
+/* ══════════════════ LOCK SCREEN ══════════════════ */
+#lock-screen{
+  position:fixed;inset:0;z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  transition:opacity 1s ease,transform 1s ease;
+}
+#lock-screen.unlock{opacity:0;transform:scale(1.06);pointer-events:none}
+
+/* Simplified gradient background */
+.lock-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,#3d0d28 0%,#120810 70%);
+}
+
+/* Floating petals on lock bg */
+.lock-petal{
+  position:absolute;font-size:var(--s);opacity:0;
+  animation:lockPetalDrift var(--d) var(--dl) linear infinite;
+  left:var(--x);top:-5%;
+}
+@keyframes lockPetalDrift{
+  0%{transform:translateY(0);opacity:0}
+  10%{opacity:.4}
+  90%{opacity:.2}
+  100%{transform:translateY(105vh);opacity:0}
+}
+
+/* Center card */
+.lock-card{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;
+  gap:0;
+}
+
+/* Top: time + date */
+.lock-clock-wrap{text-align:center;margin-bottom:3rem}
+.lock-clock{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(5rem,16vw,9rem);
+  font-weight:700;color:white;line-height:1;
+  letter-spacing:-.02em;
+  text-shadow:0 0 60px rgba(232,116,138,.3);
+  animation:fadeUp .8s ease both;
+}
+.lock-datestr{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1rem,3vw,1.4rem);
+  color:var(--blush);margin-top:.5rem;opacity:.85;
+  letter-spacing:.1em;
+  animation:fadeUp .8s .15s ease both;
+}
+
+/* Love message pill */
+.lock-love{
+  background:rgba(255,255,255,.08);backdrop-filter:blur(20px);
+  border:1px solid rgba(232,116,138,.25);
+  border-radius:50px;padding:.65rem 1.6rem;
+  color:var(--blush);font-style:italic;
+  font-size:clamp(.85rem,2.5vw,1rem);
+  margin-bottom:2.5rem;
+  animation:fadeUp .8s .25s ease both;
+}
+
+/* Passcode container */
+.passcode-wrap{
+  display:flex;flex-direction:column;
+  align-items:center;width:100%;
+  animation:fadeUp .8s .35s ease both;
+}
+.wrong-hint{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;font-style:italic;
+  color:#ff8a99;min-height:22px;margin-bottom:8px;
+  transition:opacity .3s;text-align:center;
+}
+.pass-label{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1rem;color:rgba(255,255,255,.7);
+  margin-bottom:1rem;letter-spacing:.08em;
+}
+.pass-dots{display:flex;gap:15px;margin-bottom:1.5rem}
+.dot{
+  width:12px;height:12px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.5);background:transparent;
+  transition:background .15s,transform .15s,border-color .15s;
+}
+.dot.filled{
+  background:var(--rose);border-color:var(--rose);
+  transform:scale(1.15);
+  box-shadow:0 0 10px rgba(232,116,138,.6);
+}
+.dot.shake{animation:dotShake .4s ease}
+@keyframes dotShake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}40%{transform:translateX(8px)}
+  60%{transform:translateX(-5px)}80%{transform:translateX(5px)}
+}
+
+/* Keypad - more compact size */
+.keypad{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(8px,2.5vw,14px);
+  width:min(280px,70vw);
+}
+.key{
+  aspect-ratio:1;border-radius:50%;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.12);
+  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:white;transition:background .12s,transform .12s,box-shadow .12s;
+  -webkit-tap-highlight-color:transparent;user-select:none;
+  backdrop-filter:blur(8px);
+}
+.key:active,.key.pressed{
+  background:rgba(232,116,138,.35);
+  border-color:rgba(232,116,138,.5);
+  transform:scale(.9);
+  box-shadow:0 0 20px rgba(232,116,138,.3);
+}
+.key-num{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.3rem,4vw,1.8rem);
+  font-weight:400;line-height:1;
+}
+.key-alpha{
+  font-family:-apple-system,sans-serif;
+  font-size:clamp(6px,1.2vw,9px);
+  letter-spacing:.2em;opacity:.45;margin-top:2px;
+}
+.key.empty{background:transparent;border:none;pointer-events:none}
+.key.del{background:transparent;border:none}
+.key.del .key-num{font-size:clamp(1rem,3vw,1.3rem)}
+.pass-hint{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.85rem;color:rgba(255,255,255,.25);
+  margin-top:1rem;text-align:center;
+}
+
+/* ══════════════════ MAIN ══════════════════ */
+#main{display:none;background:var(--dark)}
+#main.show{display:block}
+
+/* Petal canvas */
+#pcanvas{position:fixed;inset:0;pointer-events:none;z-index:4}
+
+/* ── HERO ── */
+.hero{
+  min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:3rem 2rem;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 60% 35%,#3d0d28 0%,#120810 70%);
+}
+.hero-stars{position:absolute;inset:0;pointer-events:none}
+.hstar{
+  position:absolute;width:var(--s);height:var(--s);
+  background:white;border-radius:50%;
+  left:var(--x);top:var(--y);
+  animation:twinkle var(--d) var(--dl) ease-in-out infinite;
+}
+@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.5}}
+
+.hero-petals{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hpetal{
+  position:absolute;font-size:var(--s);
+  animation:hpetalFall var(--d) var(--dl) linear infinite;
+  left:var(--x);top:-8%;opacity:0;
+}
+@keyframes hpetalFall{
+  0%{transform:translateY(0);opacity:0}
+  10%{opacity:.6}
+  90%{opacity:.3}
+  100%{transform:translateY(110vh);opacity:0}
+}
+
+.hero-eyebrow{
+  font-size:.75rem;letter-spacing:.6em;text-transform:uppercase;
+  color:var(--blush);margin-bottom:1.5rem;opacity:.8;
+  animation:fadeUp 1s ease both;
+}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3.5rem,11vw,9rem);
+  font-weight:700;line-height:.92;color:white;
+  animation:fadeUp 1s .2s ease both;
+}
+.hero-title em{
+  display:block;font-style:italic;
+  color:var(--rose);font-size:.52em;line-height:1.4;
+  text-shadow:0 0 40px rgba(232,116,138,.5);
+}
+.hero-name{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(2rem,6vw,4rem);
+  color:var(--blush);margin-top:.8rem;
+  animation:fadeUp 1s .4s ease both;
+  text-shadow:0 0 30px rgba(242,196,206,.4);
+}
+.hero-date{
+  font-size:.9rem;letter-spacing:.35em;color:var(--gold);
+  margin-top:.8rem;animation:fadeUp 1s .6s ease both;opacity:.8;
+}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fadeUp 1s 1.4s ease both;
+}
+.hero-scroll span{font-size:.65rem;letter-spacing:0;color:var(--blush);opacity:.6;text-transform:uppercase;text-align:center;display:block;width:100%}
+.scroll-line{
+  width:1px;height:48px;
+  background:linear-gradient(to bottom,var(--rose),transparent);
+  animation:scrollPulse 2.2s ease-in-out infinite;
+}
+@keyframes scrollPulse{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(.35);opacity:.25}}
+
+/* ── MENU SECTION ── */
+.menu-sec{
+  min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:4rem 1.5rem;
+  background:linear-gradient(175deg,#120810 0%,#1e0814 100%);
+  position:relative;
+}
+.menu-sec::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(232,116,138,.06) 0%,transparent 70%);
+}
+.menu-label{
+  font-size:.72rem;letter-spacing:.55em;text-transform:uppercase;
+  color:var(--blush);opacity:.6;margin-bottom:.8rem;
+}
+.menu-title{
+  font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,3rem);
+  color:white;font-weight:400;margin-bottom:.6rem;text-align:center;
+}
+.menu-sub{
+  font-style:italic;color:var(--blush);opacity:.6;
+  font-size:1rem;margin-bottom:3.5rem;text-align:center;
+}
+.menu-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1.2rem;width:100%;max-width:560px;position:relative;z-index:1;
+}
+.menu-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(232,116,138,.18);
+  border-radius:20px;padding:2.5rem 1.5rem;
+  cursor:pointer;transition:all .35s ease;
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+  text-align:center;position:relative;overflow:hidden;
+  backdrop-filter:blur(10px);
+}
+.menu-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(232,116,138,.12),transparent);
+  opacity:0;transition:opacity .35s;
+}
+.menu-card:hover{
+  border-color:rgba(232,116,138,.5);
+  transform:translateY(-6px);
+  box-shadow:0 20px 60px rgba(232,116,138,.15);
+}
+.menu-card:hover::before{opacity:1}
+.menu-card-icon{font-size:2.8rem;line-height:1}
+.menu-card-name{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:1.4rem;color:white;
+}
+.menu-card-desc{font-size:.82rem;color:var(--blush);opacity:.65;line-height:1.5}
+
+/* ── PAGES (fullscreen overlays) ── */
+.page{
+  position:fixed;inset:0;z-index:500;overflow-y:auto;
+  opacity:0;pointer-events:none;
+  transition:opacity .5s ease,transform .5s ease;
+  transform:translateY(30px);
+}
+.page.active{opacity:1;pointer-events:all;transform:translateY(0);z-index:600}
+
+.page-back{
+  position:fixed;top:1.2rem;left:1.2rem;z-index:700;
+  background:rgba(255,255,255,.12);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.2);border-radius:50px;
+  color:white;padding:.5rem 1.2rem;font-family:'Cormorant Garamond',serif;
+  font-size:1rem;cursor:pointer;display:flex;align-items:center;gap:.5rem;
+  transition:all .25s;
+}
+.page-back:hover{background:rgba(255,255,255,.22);transform:translateX(-3px)}
+
+/* Fix back button position on image page */
+#page-image .page-back{top:4rem}
+
+/* Hide back button when viewing image in lightbox */
+#lightbox.open ~ .page-back,
+#page-image #lightbox.open ~ * .page-back,
+body:has(#lightbox.open) #page-image .page-back{display:none}
+
+/* ══════════════════ MUSIC PAGE ══════════════════ */
+#page-music{
+  background:linear-gradient(160deg,#1a0520 0%,#0e0810 100%);
+  padding:5rem 0 4rem;
+}
+.music-header{
+  text-align:center;padding:0 2rem 3rem;
+}
+.music-header h2{
+  font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,3.5rem);
+  color:white;font-weight:400;
+}
+.music-header p{font-style:italic;color:var(--blush);opacity:.7;margin-top:.5rem}
+
+.music-list{display:flex;flex-direction:column;gap:0;max-width:680px;margin:0 auto;padding:0 1rem}
+
+.music-track{
+  display:flex;align-items:stretch;gap:0;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(232,116,138,.12);
+  border-radius:20px;margin-bottom:1.2rem;
+  overflow:hidden;cursor:pointer;
+  transition:all .3s ease;
+  position:relative;
+}
+.music-track:hover{
+  border-color:rgba(232,116,138,.35);
+  box-shadow:0 8px 40px rgba(232,116,138,.12);
+  transform:translateX(4px);
+}
+.music-track.playing{
+  border-color:var(--rose);
+  background:rgba(232,116,138,.08);
+  box-shadow:0 0 30px rgba(232,116,138,.15);
+}
+.track-cover{
+  width:110px;flex-shrink:0;position:relative;overflow:hidden;
+}
+.track-cover img,.track-cover .cover-ph{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.cover-ph{
+  background:linear-gradient(135deg,#3d1525,#6b2d42);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;min-height:110px;
+}
+.track-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.3);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .25s;
+}
+.music-track:hover .track-overlay,.music-track.playing .track-overlay{opacity:1}
+.play-icon{
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(232,116,138,.9);
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-size:16px;
+}
+
+.track-info{flex:1;padding:1.2rem 1.4rem;display:flex;flex-direction:column;justify-content:space-between}
+.track-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:white;line-height:1.3}
+.track-artist{font-style:italic;color:var(--blush);font-size:.9rem;margin-top:.3rem;opacity:.8}
+.track-progress{margin-top:.8rem}
+.progress-bar{
+  height:3px;background:rgba(255,255,255,.12);border-radius:2px;
+  position:relative;cursor:pointer;transition:height .2s;
+}
+.progress-bar:hover{
+  height:6px;
+}
+.progress-bar:hover .progress-fill{
+  box-shadow:0 0 8px rgba(232,116,138,.5);
+}
+.progress-fill{
+  height:100%;background:var(--rose);border-radius:2px;
+  width:0%;transition:width .1s linear,box-shadow .2s;
+}
+.progress-time{
+  display:flex;justify-content:space-between;
+  font-size:.72rem;color:rgba(255,255,255,.4);
+  font-family:-apple-system,sans-serif;margin-top:4px;
+}
+.eq-wrap{display:flex;align-items:center;gap:2px;height:18px;margin-left:.5rem}
+.eq-b{width:3px;background:var(--rose);border-radius:2px;animation:eqA var(--d) ease-in-out infinite alternate}
+@keyframes eqA{from{height:2px}to{height:14px}}
+.track-num{
+  font-family:'Playfair Display',serif;font-size:2rem;
+  color:rgba(255,255,255,.08);font-style:italic;
+  position:absolute;right:1rem;bottom:.8rem;
+}
+
+/* Hidden audio */
+audio{display:none}
+
+/* ══════════════════ LETTER PAGE ══════════════════ */
+#page-letter{
+  background:linear-gradient(160deg,#fff5f7 0%,#fff8f5 100%);
+  display:flex;align-items:center;justify-content:center;
+  min-height:100svh;padding:5rem 1.5rem;
+}
+.letter-wrap{max-width:680px;width:100%}
+.letter-paper{
+  background:white;border-radius:4px;
+  padding:clamp(2rem,6vw,5rem);
+  box-shadow:0 30px 80px rgba(107,45,66,.12),0 0 0 1px var(--blush);
+  position:relative;
+}
+.letter-paper::before{
+  content:'"';position:absolute;top:-1.5rem;left:2.5rem;
+  font-family:'Playfair Display',serif;font-size:12rem;
+  color:rgba(232,116,138,.1);line-height:1;pointer-events:none;
+}
+.letter-paper::after{
+  content:'';position:absolute;left:3rem;top:3rem;bottom:3rem;
+  width:1px;background:rgba(232,116,138,.15);
+}
+.letter-date{
+  font-size:.8rem;letter-spacing:.25em;color:var(--gold);
+  margin-bottom:2rem;opacity:.8;
+}
+.letter-dear{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:1.6rem;color:var(--deep);margin-bottom:1.5rem;
+}
+.letter-body{
+  font-size:1.15rem;line-height:2.1;font-weight:300;
+  color:#2d1a20;font-style:italic;
+}
+.letter-body p+p{margin-top:1.2rem}
+.letter-sig{
+  margin-top:3rem;text-align:right;
+  font-family:'Dancing Script',cursive;font-size:2rem;color:var(--rose);
+}
+.letter-sig span{
+  display:block;font-family:'Cormorant Garamond',serif;
+  font-size:.85rem;letter-spacing:.25em;color:var(--gold);
+  font-style:normal;margin-top:.3rem;
+}
+.letter-seal{
+  position:absolute;bottom:-1.2rem;right:2rem;
+  font-size:2.5rem;
+}
+
+/* ══════════════════ IMAGE PAGE ══════════════════ */
+#page-image{
+  background:var(--dark);
+  overflow:hidden;
+}
+.img-ticker-wrap{
+  position:fixed;left:0;right:0;z-index:150;
+  overflow:hidden;padding:.6rem 0;
+  background:rgba(18,8,16,.85);backdrop-filter:blur(10px);
+}
+.img-ticker-wrap.top{top:0;border-bottom:1px solid rgba(232,116,138,.2)}
+.img-ticker-wrap.bottom{bottom:0;border-top:1px solid rgba(232,116,138,.2)}
+.img-ticker{
+  display:flex;gap:3rem;white-space:nowrap;
+  animation:ticker 18s linear infinite;
+}
+.img-ticker-wrap.bottom .img-ticker{animation-direction:reverse}
+.img-ticker span{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:1rem;color:var(--blush);opacity:.7;letter-spacing:.15em;
+}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.img-gallery-outer{
+  padding:4.5rem 1rem;min-height:100svh;
+  display:flex;flex-direction:column;gap:1rem;justify-content:center;
+}
+.img-row{display:flex;gap:.8rem;overflow-x:hidden;overflow-y:hidden}
+.img-row::-webkit-scrollbar{display:none}
+.img-row-inner{
+  display:flex;gap:.8rem;
+  animation:rowScroll var(--spd) linear infinite;
+}
+.img-row.rev .img-row-inner{animation-direction:reverse}
+@keyframes rowScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.img-thumb{
+  width:220px;height:220px;flex-shrink:0;
+  border-radius:12px;overflow:hidden;cursor:pointer;
+  position:relative;border:2px solid transparent;
+  transition:border-color .3s,transform .3s;
+}
+.img-thumb:hover{border-color:var(--rose);transform:scale(1.04)}
+.img-thumb img,.img-thumb .img-ph{width:100%;height:100%;object-fit:cover;display:block}
+.img-ph{
+  background:linear-gradient(135deg,#2d0a1e,#6b2d42);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;
+}
+.img-thumb-overlay{
+  position:absolute;inset:0;
+  background:rgba(107,45,66,.5);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .25s;font-size:1.8rem;
+}
+.img-thumb:hover .img-thumb-overlay{opacity:1}
+
+/* Lightbox */
+#lightbox{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+#lightbox.open{opacity:1;pointer-events:all}
+.lb-img{
+  max-width:90vw;max-height:85svh;
+  border-radius:8px;object-fit:contain;
+  box-shadow:0 0 80px rgba(232,116,138,.2);
+}
+.lb-ph{
+  width:min(500px,85vw);height:min(500px,70svh);
+  background:linear-gradient(135deg,#3d1525,#6b2d42);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:6rem;
+}
+.lb-close{
+  position:absolute;top:1.5rem;right:1.5rem;
+  background:rgba(255,255,255,.12);border:none;border-radius:50%;
+  width:44px;height:44px;color:white;font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;
+}
+.lb-close:hover{background:rgba(255,255,255,.25)}
+
+/* ══════════════════ GIFT PAGE ══════════════════ */
+#page-gift{
+  background:radial-gradient(ellipse at 50% 30%,#2d0a1e 0%,#120810 70%);
+  min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  overflow:hidden;padding:5rem 2rem;
+}
+#gift-canvas{position:absolute;inset:0;pointer-events:none;z-index:1}
+
+.gift-inner{position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2rem}
+.gift-title{
+  font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,3rem);
+  color:white;font-weight:400;
+}
+.gift-sub{font-style:italic;color:var(--blush);opacity:.7;font-size:1rem}
+
+/* Bouquet */
+.bouquet-wrap{
+  position:relative;width:260px;height:300px;
+  cursor:pointer;transition:transform .3s;
+}
+.bouquet-wrap:hover{transform:scale(1.04) translateY(-6px)}
+.bouquet-svg{width:100%;height:100%}
+
+.gift-reveal-msg{
+  font-family:'Dancing Script',cursive;font-size:1.8rem;
+  color:var(--blush);opacity:0;transition:opacity .8s .5s;
+  text-align:center;max-width:400px;line-height:1.6;
+}
+.bouquet-wrap.opened ~ .gift-reveal-msg{opacity:1}
+
+.gift-btn{
+  background:transparent;border:1px solid rgba(232,116,138,.5);
+  border-radius:50px;padding:.7rem 2rem;color:var(--blush);
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;
+  cursor:pointer;transition:all .3s;margin-top:.5rem;
+}
+.gift-btn:hover{background:rgba(232,116,138,.15);border-color:var(--rose);color:white}
+.gift-btn.hidden{display:none}
+
+/* ══════════════════ CLOSING SECTION ══════════════════ */
+.closing{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:2rem 2rem 1rem;
+  background:radial-gradient(ellipse at 50% 60%,#2d0a1e 0%,#120810 80%);
+  position:relative;overflow:hidden;
+}
+.closing-stars{position:absolute;inset:0;pointer-events:none}
+.closing h2{
+  font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);
+  color:white;font-weight:400;margin-bottom:1rem;
+}
+.closing-poem{
+  font-size:1.2rem;font-style:italic;font-weight:300;
+  color:var(--blush);line-height:2.2;max-width:500px;margin:0 auto 1.5rem;
+  opacity:.9;
+}
+.closing-heart{font-size:3rem;display:block;margin:1rem auto .5rem}
+.closing-sig{
+  font-family:'Dancing Script',cursive;font-size:2.2rem;color:var(--rose);
+  margin:0;
+}
+.closing-sig span{
+  display:block;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1rem;color:var(--gold);margin-top:.4rem;letter-spacing:.2em;
+}
+
+/* ══════════════════ SHARED ══════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .9s ease,transform .9s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ LOCK SCREEN ══════════════════ -->
+<div id="lock-screen">
+  <div class="lock-bg"></div>
+  <!-- Floating petals -->
+  <div id="lock-petals"></div>
+
+  <div class="lock-card">
+    <!-- Clock & date -->
+    <div class="lock-clock-wrap">
+      <div class="lock-clock" id="lk-clock">09:41</div>
+      <div class="lock-datestr" id="lk-date">Thứ Bảy, 8 tháng 3</div>
+    </div>
+
+    <div class="lock-love">💌 Anh có điều muốn nói với em hôm nay...</div>
+
+    <!-- Passcode -->
+    <div class="passcode-wrap">
+      <div class="wrong-hint" id="wrong-hint"></div>
+      <p class="pass-label">Nhập mật khẩu để mở</p>
+      <div class="pass-dots" id="pass-dots">
+        <div class="dot" id="d0"></div>
+        <div class="dot" id="d1"></div>
+        <div class="dot" id="d2"></div>
+        <div class="dot" id="d3"></div>
+      </div>
+      <div class="keypad" id="keypad">
+        <button class="key" data-n="1"><span class="key-num">1</span></button>
+        <button class="key" data-n="2"><span class="key-num">2</span><span class="key-alpha">ABC</span></button>
+        <button class="key" data-n="3"><span class="key-num">3</span><span class="key-alpha">DEF</span></button>
+        <button class="key" data-n="4"><span class="key-num">4</span><span class="key-alpha">GHI</span></button>
+        <button class="key" data-n="5"><span class="key-num">5</span><span class="key-alpha">JKL</span></button>
+        <button class="key" data-n="6"><span class="key-num">6</span><span class="key-alpha">MNO</span></button>
+        <button class="key" data-n="7"><span class="key-num">7</span><span class="key-alpha">PQRS</span></button>
+        <button class="key" data-n="8"><span class="key-num">8</span><span class="key-alpha">TUV</span></button>
+        <button class="key" data-n="9"><span class="key-num">9</span><span class="key-alpha">WXYZ</span></button>
+        <button class="key empty"></button>
+        <button class="key" data-n="0"><span class="key-num">0</span></button>
+        <button class="key del" id="del-btn"><span class="key-num">⌫</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ MAIN CONTENT ══════════════════ -->
+<div id="main">
+  <canvas id="pcanvas"></canvas>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-stars" id="hero-stars"></div>
+    <div class="hero-petals" id="hero-petals"></div>
+    <p class="hero-eyebrow">✦ Một ngày đặc biệt ✦</p>
+    <h1 class="hero-title">Chúc Mừng<em>Ngày 8 Tháng 3</em></h1>
+    <p class="hero-name">Mỹ Duyên 🌸</p>
+    <p class="hero-date">08 · 03 · 2026</p>
+  </section>
+
+  <!-- MENU -->
+  <section class="menu-sec reveal" id="menu-sec">
+    <p class="menu-label">✦ Dành riêng cho em ✦</p>
+    <h2 class="menu-title">Hôm Nay Anh Muốn Tặng Em</h2>
+    <p class="menu-sub">Chọn một điều em muốn khám phá trước nhé</p>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="openPage('music')">
+        <div class="menu-card-icon">🎵</div>
+        <div class="menu-card-name">Music</div>
+        <div class="menu-card-desc">Những bài hát anh dành cho em</div>
+      </div>
+      <div class="menu-card" onclick="openPage('letter')">
+        <div class="menu-card-icon">💌</div>
+        <div class="menu-card-name">Letter</div>
+        <div class="menu-card-desc">Lời từ trái tim anh</div>
+      </div>
+      <div class="menu-card" onclick="openPage('image')">
+        <div class="menu-card-icon">🖼️</div>
+        <div class="menu-card-name">Images</div>
+        <div class="menu-card-desc">Những bức ảnh của em</div>
+      </div>
+      <div class="menu-card" onclick="openPage('gift')">
+        <div class="menu-card-icon">🎁</div>
+        <div class="menu-card-name">Gift</div>
+        <div class="menu-card-desc">Một món quà nhỏ dành cho em</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing reveal" id="closing">
+    <div class="closing-stars" id="closing-stars"></div>
+    <div style="position:relative;z-index:1;width:100%">
+      <h2>Lời Kết ✨</h2>
+      <p class="closing-poem">
+        Dù năm tháng có qua đi,<br>
+        dù mùa đông hay mùa hạ,<br>
+        anh vẫn luôn ở đây.<br><br>
+        Chúc em ngày 8/3<br>
+        tràn đầy hạnh phúc và yêu thương.
+      </p>
+      <span class="closing-heart">💕</span>
+      <p class="closing-sig">
+        <span>— Việt Anh —</span>
+      </p>
+    </div>
+  </section>
+</div><!-- /main -->
+
+<!-- ══════════════════ PAGE: MUSIC ══════════════════ -->
+<div class="page" id="page-music">
+  <button class="page-back" onclick="closePage('music')">← Quay lại</button>
+  <div class="music-header">
+    <h2>Playlist Của Chúng Ta 🎵</h2>
+    <p>Những bài hát anh yêu thích và muốn chia sẻ cùng em</p>
+  </div>
+  <div class="music-list">
+    <div class="music-track" data-track="0">
+      <div class="track-cover">
+        <div class="cover-ph">🌸</div>
+        <div class="track-overlay"><div class="play-icon" id="pi0">▶</div></div>
+      </div>
+      <div class="track-info">
+        <div>
+          <div class="track-title">Thích quá rùi nà</div>
+          <div class="track-artist">Machiot, Tlinh, Trung Trần</div>
+        </div>
+        <div class="track-progress">
+          <div class="progress-bar" data-track="0">
+            <div class="progress-fill" id="pf0"></div>
+          </div>
+          <div class="progress-time"><span id="ct0">0:00</span><span id="dt0">0:00</span></div>
+        </div>
+      </div>
+      <div class="track-num">01</div>
+    </div>
+    <div class="music-track" data-track="1">
+      <div class="track-cover">
+        <div class="cover-ph">💐</div>
+        <div class="track-overlay"><div class="play-icon" id="pi1">▶</div></div>
+      </div>
+      <div class="track-info">
+        <div>
+          <div class="track-title">Đóa hoa</div>
+          <div class="track-artist">TeuYungBoy, BIG WIND, Donal</div>
+        </div>
+        <div class="track-progress">
+          <div class="progress-bar" data-track="1">
+            <div class="progress-fill" id="pf1"></div>
+          </div>
+          <div class="progress-time"><span id="ct1">0:00</span><span id="dt1">0:00</span></div>
+        </div>
+      </div>
+      <div class="track-num">02</div>
+    </div>
+    <div class="music-track" data-track="2">
+      <div class="track-cover">
+        <div class="cover-ph">🌹</div>
+        <div class="track-overlay"><div class="play-icon" id="pi2">▶</div></div>
+      </div>
+      <div class="track-info">
+        <div>
+          <div class="track-title">Đến đây bên anh</div>
+          <div class="track-artist">Dangrangto, Donal</div>
+        </div>
+        <div class="track-progress">
+          <div class="progress-bar" data-track="2">
+            <div class="progress-fill" id="pf2"></div>
+          </div>
+          <div class="progress-time"><span id="ct2">0:00</span><span id="dt2">0:00</span></div>
+        </div>
+      </div>
+      <div class="track-num">03</div>
+    </div>
+    <div class="music-track" data-track="3">
+      <div class="track-cover">
+        <div class="cover-ph">🌷</div>
+        <div class="track-overlay"><div class="play-icon" id="pi3">▶</div></div>
+      </div>
+      <div class="track-info">
+        <div>
+          <div class="track-title">Nơi này có anh</div>
+          <div class="track-artist">Sơn Tùng M-TP</div>
+        </div>
+        <div class="track-progress">
+          <div class="progress-bar" data-track="3">
+            <div class="progress-fill" id="pf3"></div>
+          </div>
+          <div class="progress-time"><span id="ct3">0:00</span><span id="dt3">0:00</span></div>
+        </div>
+      </div>
+      <div class="track-num">04</div>
+    </div>
+    <div class="music-track" data-track="4">
+      <div class="track-cover">
+        <div class="cover-ph">🎀</div>
+        <div class="track-overlay"><div class="play-icon" id="pi4">▶</div></div>
+      </div>
+      <div class="track-info">
+        <div>
+          <div class="track-title">Tay to</div>
+          <div class="track-artist">RPT MCK, PhongKhin</div>
+        </div>
+        <div class="track-progress">
+          <div class="progress-bar" data-track="4">
+            <div class="progress-fill" id="pf4"></div>
+          </div>
+          <div class="progress-time"><span id="ct4">0:00</span><span id="dt4">0:00</span></div>
+        </div>
+      </div>
+      <div class="track-num">05</div>
+    </div>
+    <div class="music-track" data-track="5">
+      <div class="track-cover">
+        <div class="cover-ph">🌻</div>
+        <div class="track-overlay"><div class="play-icon" id="pi5">▶</div></div>
+      </div>
+      <div class="track-info">
+        <div>
+          <div class="track-title">Thế giới của anh</div>
+          <div class="track-artist">Dangrangto, Donal</div>
+        </div>
+        <div class="track-progress">
+          <div class="progress-bar" data-track="5">
+            <div class="progress-fill" id="pf5"></div>
+          </div>
+          <div class="progress-time"><span id="ct5">0:00</span><span id="dt5">0:00</span></div>
+        </div>
+      </div>
+      <div class="track-num">06</div>
+    </div>
+    <div class="music-track" data-track="6">
+      <div class="track-cover">
+        <div class="cover-ph">🌙</div>
+        <div class="track-overlay"><div class="play-icon" id="pi6">▶</div></div>
+      </div>
+      <div class="track-info">
+        <div>
+          <div class="track-title">Va vào giai điệu này</div>
+          <div class="track-artist">RPT MCK</div>
+        </div>
+        <div class="track-progress">
+          <div class="progress-bar" data-track="6">
+            <div class="progress-fill" id="pf6"></div>
+          </div>
+          <div class="progress-time"><span id="ct6">0:00</span><span id="dt6">0:00</span></div>
+        </div>
+      </div>
+      <div class="track-num">07</div>
+    </div>
+    <div class="music-track" data-track="7">
+      <div class="track-cover">
+        <div class="cover-ph">💫</div>
+        <div class="track-overlay"><div class="play-icon" id="pi7">▶</div></div>
+      </div>
+      <div class="track-info">
+        <div>
+          <div class="track-title">XTC</div>
+          <div class="track-artist">Groovie Lã Thắng, Tlinh, RPT MCK</div>
+        </div>
+        <div class="track-progress">
+          <div class="progress-bar" data-track="7">
+            <div class="progress-fill" id="pf7"></div>
+          </div>
+          <div class="progress-time"><span id="ct7">0:00</span><span id="dt7">0:00</span></div>
+        </div>
+      </div>
+      <div class="track-num">08</div>
+    </div>
+    <div class="music-track" data-track="8">
+      <div class="track-cover">
+        <div class="cover-ph">⭐</div>
+        <div class="track-overlay"><div class="play-icon" id="pi8">▶</div></div>
+      </div>
+      <div class="track-info">
+        <div>
+          <div class="track-title">Công ty 4</div>
+          <div class="track-artist">Andree Right Hand, Dangrangto, TeuYungBoy, WOKEUP</div>
+        </div>
+        <div class="track-progress">
+          <div class="progress-bar" data-track="8">
+            <div class="progress-fill" id="pf8"></div>
+          </div>
+          <div class="progress-time"><span id="ct8">0:00</span><span id="dt8">0:00</span></div>
+        </div>
+      </div>
+      <div class="track-num">09</div>
+    </div>
+  </div>
+
+  <audio id="audio0" src="music/Thích Quá Rùi Nà (Machimix).mp3" preload="none"></audio>
+  <audio id="audio1" src="music/ĐOÁ HOA.mp3" preload="none"></audio>
+  <audio id="audio2" src="music/hãy đến đây bên anh trong một chiều mùa thu.mp3" preload="none"></audio>
+  <audio id="audio3" src="music/Nơi Này Có Anh.mp3" preload="none"></audio>
+  <audio id="audio4" src="music/Tay To.mp3" preload="none"></audio>
+  <audio id="audio5" src="music/thế giới của anh.mp3" preload="none"></audio>
+  <audio id="audio6" src="music/Va Vào Giai Điệu Này.mp3" preload="none"></audio>
+  <audio id="audio7" src="music/Xích Thêm Chút Remix.mp3" preload="none"></audio>
+  <audio id="audio8" src="music/Công Ty 4.mp3" preload="none"></audio>
+
+</div>
+
+<!-- ══════════════════ PAGE: LETTER ══════════════════ -->
+<div class="page" id="page-letter">
+  <button class="page-back" onclick="closePage('letter')" style="color:var(--deep);background:rgba(107,45,66,.1);border-color:rgba(107,45,66,.2)">← Quay lại</button>
+  <div class="letter-wrap">
+    <div class="letter-paper">
+      <!-- ✏️ Thay ngày -->
+      <div class="letter-date">08/03/2026</div>
+      <!-- ✏️ Thay tên em -->
+      <div class="letter-dear">Em Duyên xinh gái,</div>
+      <div class="letter-body">
+        <!-- ✏️ Thay lời nhắn -->
+        <p>Nhân ngày 8/3 — ngày của những người phụ nữ tuyệt vời nhất thế giới — anh có đôi lời ngắn ngủi muốn nói:</p>
+        <p>Anh thích cái cách em cười, đôi mắt em lấp lánh mỗi khi vui. Mỗi lúc bên em là một khoảnh khắc anh trân trọng và ghi nhớ mãi.</p>
+        <p>Có lẽ anh sẽ phải cảm ơn thầy Ngô Công Thắng, vì nếu không nhờ môn của thầy thì có lẽ anh đã không gặp được iem.</p>
+        <p>Chúc em ngày 8/3 thật hạnh phúc và luôn luôn rạng rỡ như vậy nhé. Em xứng đáng được nhận tất cả những điều tốt đẹp nhất trên đời. 🌷</p>
+      </div>
+      <!-- ✏️ Thay tên anh -->
+      <div class="letter-sig">
+        <span>— Việt Anh —</span>
+      </div>
+      <div class="letter-seal">💌</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ PAGE: IMAGE ══════════════════ -->
+<div class="page" id="page-image">
+  <button class="page-back" onclick="closePage('image')">← Quay lại</button>
+
+  <div class="img-ticker-wrap top">
+    <div class="img-ticker" id="ticker-top"></div>
+  </div>
+
+  <div class="img-gallery-outer" id="img-gallery">
+    <div class="img-row" style="--spd:30s">
+      <div class="img-row-inner" id="row1"></div>
+    </div>
+    <div class="img-row rev" style="--spd:25s">
+      <div class="img-row-inner" id="row2"></div>
+    </div>
+  </div>
+
+  <div class="img-ticker-wrap bottom">
+    <div class="img-ticker" id="ticker-bot"></div>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" onclick="closeLightbox(event)">
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+    <div class="lb-ph" id="lb-content">🌸</div>
+  </div>
+</div>
+
+<!-- ══════════════════ PAGE: GIFT ══════════════════ -->
+<div class="page" id="page-gift">
+  <button class="page-back" onclick="closePage('gift')">← Quay lại</button>
+  <canvas id="gift-canvas"></canvas>
+  <div class="gift-inner">
+    <div>
+      <h2 class="gift-title">Một Bó Hoa Dành Cho Em 🌸</h2>
+      <p class="gift-sub">Nhấn vào bó hoa để nhận món quà nhé</p>
+    </div>
+
+    <!-- Bouquet SVG -->
+    <div class="bouquet-wrap" id="bouquet-wrap" onclick="openGift()">
+      <svg class="bouquet-svg" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stems -->
+        <path d="M130 290 Q120 240 110 200 Q105 180 115 160" stroke="#4a7c59" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M130 290 Q130 250 130 210 Q130 185 130 165" stroke="#4a7c59" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M130 290 Q140 245 148 205 Q152 183 143 162" stroke="#4a7c59" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M130 290 Q115 250 105 215 Q98 193 108 175" stroke="#5a8c69" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M130 290 Q145 248 153 212 Q158 190 150 173" stroke="#5a8c69" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- Leaves -->
+        <path d="M112 195 Q100 185 95 170 Q108 175 112 195Z" fill="#4a7c59" opacity=".9"/>
+        <path d="M148 192 Q160 183 165 168 Q152 173 148 192Z" fill="#4a7c59" opacity=".9"/>
+        <path d="M107 220 Q93 215 90 200 Q103 205 107 220Z" fill="#5a8c69" opacity=".8"/>
+        <path d="M152 218 Q166 213 169 198 Q156 203 152 218Z" fill="#5a8c69" opacity=".8"/>
+        <!-- Wrapper -->
+        <path d="M90 260 L130 270 L170 260 L160 300 L100 300Z" fill="#e8748a" opacity=".9"/>
+        <path d="M90 260 L100 300 L130 295 L130 270Z" fill="#d45e78" opacity=".9"/>
+        <path d="M130 270 L130 295 L160 300 L170 260Z" fill="#f28fa0" opacity=".9"/>
+        <!-- Ribbon -->
+        <path d="M100 268 Q130 280 160 268" stroke="white" stroke-width="2" fill="none" opacity=".6"/>
+        <!-- Rose 1 - center top -->
+        <circle cx="130" cy="155" r="22" fill="#e8748a"/>
+        <circle cx="130" cy="155" r="17" fill="#d45e78"/>
+        <circle cx="130" cy="155" r="11" fill="#c04868"/>
+        <circle cx="130" cy="155" r="6" fill="#a83555"/>
+        <ellipse cx="113" cy="148" rx="9" ry="7" fill="#f28fa0" opacity=".8" transform="rotate(-20 113 148)"/>
+        <ellipse cx="147" cy="148" rx="9" ry="7" fill="#f28fa0" opacity=".8" transform="rotate(20 147 148)"/>
+        <ellipse cx="130" cy="137" rx="7" ry="9" fill="#f28fa0" opacity=".7"/>
+        <ellipse cx="130" cy="173" rx="7" ry="8" fill="#f28fa0" opacity=".6"/>
+        <!-- Rose 2 - left -->
+        <circle cx="105" cy="170" r="18" fill="#f06080"/>
+        <circle cx="105" cy="170" r="13" fill="#d45e78"/>
+        <circle cx="105" cy="170" r="8" fill="#b84060"/>
+        <circle cx="105" cy="170" r="4" fill="#9a2848"/>
+        <ellipse cx="91" cy="164" rx="8" ry="6" fill="#f5a0b0" opacity=".8" transform="rotate(-20 91 164)"/>
+        <ellipse cx="119" cy="164" rx="8" ry="6" fill="#f5a0b0" opacity=".8" transform="rotate(20 119 164)"/>
+        <!-- Rose 3 - right -->
+        <circle cx="155" cy="170" r="18" fill="#f06080"/>
+        <circle cx="155" cy="170" r="13" fill="#d45e78"/>
+        <circle cx="155" cy="170" r="8" fill="#b84060"/>
+        <circle cx="155" cy="170" r="4" fill="#9a2848"/>
+        <ellipse cx="141" cy="164" rx="8" ry="6" fill="#f5a0b0" opacity=".8" transform="rotate(-20 141 164)"/>
+        <ellipse cx="169" cy="164" rx="8" ry="6" fill="#f5a0b0" opacity=".8" transform="rotate(20 169 164)"/>
+        <!-- Baby roses -->
+        <circle cx="115" cy="148" r="12" fill="#ff9ab0"/>
+        <circle cx="115" cy="148" r="8" fill="#f07090"/>
+        <circle cx="115" cy="148" r="4" fill="#d05070"/>
+        <circle cx="145" cy="148" r="12" fill="#ff9ab0"/>
+        <circle cx="145" cy="148" r="8" fill="#f07090"/>
+        <circle cx="145" cy="148" r="4" fill="#d05070"/>
+        <!-- Baby pink flowers -->
+        <circle cx="112" cy="188" r="10" fill="#ffb8c8"/>
+        <circle cx="112" cy="188" r="6" fill="#e890a8"/>
+        <circle cx="148" cy="188" r="10" fill="#ffb8c8"/>
+        <circle cx="148" cy="188" r="6" fill="#e890a8"/>
+        <!-- White accent flowers -->
+        <circle cx="125" cy="140" r="7" fill="white" opacity=".9"/>
+        <circle cx="125" cy="140" r="4" fill="#f5d0d8"/>
+        <circle cx="135" cy="140" r="7" fill="white" opacity=".9"/>
+        <circle cx="135" cy="140" r="4" fill="#f5d0d8"/>
+        <!-- Sparkles on bouquet -->
+        <text x="88" y="145" font-size="14" opacity=".8">✨</text>
+        <text x="155" y="143" font-size="12" opacity=".7">⭐</text>
+        <text x="95" y="208" font-size="10" opacity=".6">✨</text>
+      </svg>
+    </div>
+
+    <p class="gift-reveal-msg" id="gift-msg">
+      🌹 Một bó hoa dành tặng em —<br>
+      người con gái xinh đẹp nhất trong mắt anh 🌸
+    </p>
+    <button class="gift-btn" id="gift-btn" onclick="openGift()">✦ Nhấn để nhận hoa ✦</button>
+  </div>
+</div>
+
+<!-- ══════════════════ JAVASCRIPT ══════════════════ -->
+<script>
+// ══════════ LOCK ══════════
+const PASSWORD = '0905';
+let entered = '';
+
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('lk-clock').textContent = h+':'+m;
+  const days=['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+  document.getElementById('lk-date').textContent =
+    days[now.getDay()]+', '+now.getDate()+' tháng '+(now.getMonth()+1);
+}
+updateClock(); setInterval(updateClock,15000);
+
+// Lock screen floating petals
+(function(){
+  const c=document.getElementById('lock-petals');
+  const em=['🌸','🌷','💕','🌹'];
+  for(let i=0;i<8;i++){
+    const el=document.createElement('div'); el.className='lock-petal';
+    el.textContent=em[Math.floor(Math.random()*em.length)];
+    el.style.cssText=`--s:${Math.random()*1.2+.8}rem;--d:${Math.random()*8+10}s;--dl:${Math.random()*8}s;--x:${Math.random()*90+5}%`;
+    c.appendChild(el);
+  }
+})();
+
+const dots = [0,1,2,3].map(i=>document.getElementById('d'+i));
+function syncDots() {
+  dots.forEach((d,i)=>{
+    d.classList.toggle('filled', i<entered.length);
+    d.classList.remove('shake');
+  });
+}
+function shakeErr() {
+  dots.forEach(d=>{ void d.offsetWidth; d.classList.add('shake'); });
+  document.getElementById('wrong-hint').textContent='Sai mật khẩu, thử lại nhé 💕';
+  setTimeout(()=>{
+    entered=''; syncDots();
+    document.getElementById('wrong-hint').textContent='';
+  },900);
+}
+
+document.getElementById('keypad').addEventListener('click', e=>{
+  const key = e.target.closest('.key[data-n]');
+  const del = e.target.closest('#del-btn');
+  if(del){ entered=entered.slice(0,-1); syncDots(); return; }
+  if(!key || entered.length>=4) return;
+  key.classList.add('pressed');
+  setTimeout(()=>key.classList.remove('pressed'),150);
+  entered += key.dataset.n;
+  syncDots();
+  if(entered.length===4){
+    setTimeout(()=>{
+      if(entered===PASSWORD){ doUnlock(); } else { shakeErr(); }
+    },200);
+  }
+});
+
+function doUnlock() {
+  const ls = document.getElementById('lock-screen');
+  ls.classList.add('unlock');
+  setTimeout(()=>{
+    ls.style.display='none';
+    document.getElementById('main').classList.add('show');
+    initMain();
+  },900);
+}
+
+// ══════════ MAIN INIT ══════════
+function initMain() {
+  initPetals();
+  initHeroStars();
+  initHeroPetals();
+  initReveal();
+  initClosingStars();
+  buildImageGallery();
+  buildTickers();
+}
+
+// ══════════ FALLING PETALS (background) ══════════
+function initPetals() {
+  const c = document.getElementById('pcanvas');
+  const ctx = c.getContext('2d');
+  function resize(){ c.width=innerWidth; c.height=innerHeight; }
+  resize(); window.addEventListener('resize',resize);
+  const COLS=['#f9c0cb','#f2c4ce','#e8748a','#fce4ec'];
+  function make(){ return {
+    x:Math.random()*innerWidth, y:Math.random()*innerHeight*2-innerHeight,
+    sz:Math.random()*6+3, col:COLS[Math.floor(Math.random()*COLS.length)],
+    vy:Math.random()*.8+.6, vx:(Math.random()-.5)*.3,
+    rot:0, rsp:0,
+    op:Math.random()*.3+.1
+  };}
+  const P=Array.from({length:12},make);
+  (function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    P.forEach((p,i)=>{
+      p.y+=p.vy; p.x+=p.vx;
+      ctx.save(); ctx.translate(p.x,p.y);
+      ctx.globalAlpha=p.op; ctx.fillStyle=p.col;
+      ctx.beginPath(); ctx.ellipse(0,0,p.sz*.4,p.sz,0,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+      if(p.y>c.height+20) P[i]=Object.assign(make(),{y:-20,x:Math.random()*innerWidth});
+    });
+    requestAnimationFrame(draw);
+  })();
+}
+
+function initHeroStars() {
+  const c = document.getElementById('hero-stars');
+  for(let i=0;i<30;i++){
+    const s=document.createElement('div'); s.className='hstar';
+    const sz=Math.random()*2+.5;
+    s.style.cssText=`--s:${sz}px;--x:${Math.random()*100}%;--y:${Math.random()*100}%;--d:${Math.random()*3+2}s;--dl:${Math.random()*4}s`;
+    c.appendChild(s);
+  }
+}
+
+function initHeroPetals() {
+  const c = document.getElementById('hero-petals');
+  const emojis=['🌸','🌷','💕','🌹'];
+  for(let i=0;i<6;i++){
+    const el=document.createElement('div'); el.className='hpetal';
+    el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.cssText=`--s:${Math.random()*1.1+.8}rem;--d:${Math.random()*6+8}s;--dl:${Math.random()*8}s;--x:${Math.random()*80+10}%`;
+    c.appendChild(el);
+  }
+}
+
+function initReveal() {
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+function initClosingStars() {
+  const c=document.getElementById('closing-stars');
+  for(let i=0;i<25;i++){
+    const s=document.createElement('div'); s.className='hstar';
+    const sz=Math.random()*1.5+.5;
+    s.style.cssText=`--s:${sz}px;--x:${Math.random()*100}%;--y:${Math.random()*100}%;--d:${Math.random()*3+2}s;--dl:${Math.random()*4}s`;
+    c.appendChild(s);
+  }
+}
+
+// ══════════ PAGE NAVIGATION ══════════
+function openPage(name) {
+  console.log('Opening page:', name);
+  const pageEl = document.getElementById('page-'+name);
+  if(pageEl) {
+    pageEl.classList.add('active');
+    document.body.style.overflow='hidden';
+    if(name==='gift') initGiftCanvas();
+  } else {
+    console.error('Page not found:', 'page-'+name);
+  }
+}
+function closePage(name) {
+  const pageEl = document.getElementById('page-'+name);
+  if(pageEl) {
+    pageEl.classList.remove('active');
+    document.body.style.overflow='';
+    if(name==='music') pauseAllAudio();
+    if(name==='gift') stopGiftCanvas();
+  }
+}
+
+// ══════════ MUSIC ══════════
+let currentTrack = -1;
+let audioEls = [];
+
+function initAudio() {
+  for(let i=0;i<9;i++) audioEls.push(document.getElementById('audio'+i));
+}
+initAudio();
+
+const DEMO_SONGS = [
+  '', // Track 1 - thêm URL mp3 tại đây
+  '', // Track 2 
+  '', // Track 3
+  '', // Track 4
+  '', // Track 5
+  '', // Track 6
+  '', // Track 7
+  '', // Track 8
+  '', // Track 9
+];
+audioEls.forEach((a,i)=>{ if(DEMO_SONGS[i]) a.src=DEMO_SONGS[i]; });
+
+document.querySelectorAll('.music-track').forEach(track=>{
+  track.addEventListener('click', ()=>{ toggleTrack(parseInt(track.dataset.track)); });
+  // Enhanced progress bar interaction
+  const pb = track.querySelector('.progress-bar');
+  if(pb) {
+    let isDragging = false;
+    
+    // Click to seek
+    pb.addEventListener('click', e=>{
+      if(isDragging) return;
+      seekAudio(pb, e);
+    });
+    
+    // Drag to seek
+    pb.addEventListener('mousedown', e=>{
+      isDragging = true;
+      seekAudio(pb, e);
+      
+      const handleMouseMove = e => {
+        if(isDragging) seekAudio(pb, e);
+      };
+      
+      const handleMouseUp = () => {
+        isDragging = false;
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+      
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      
+      e.preventDefault();
+    });
+    
+    // Prevent track toggle when interacting with progress bar
+    pb.addEventListener('click', e => e.stopPropagation());
+    pb.addEventListener('mousedown', e => e.stopPropagation());
+  }
+});
+
+function seekAudio(progressBar, event) {
+  const idx = parseInt(progressBar.dataset.track);
+  const audio = audioEls[idx];
+  if(audio && audio.duration){
+    const rect = progressBar.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+    audio.currentTime = percent * audio.duration;
+    // Immediately update visual
+    updateProgress(idx);
+  }
+}
+
+function toggleTrack(idx) {
+  const audio = audioEls[idx];
+  if(!audio.src || audio.src===location.href+'#') {
+    // No source - show demo animation
+    if(currentTrack===idx){ stopTrack(idx); }
+    else { if(currentTrack>=0) stopTrack(currentTrack); startTrackVisual(idx); }
+    return;
+  }
+  if(currentTrack===idx){
+    if(audio.paused){ audio.play(); setPlaying(idx,true); }
+    else { audio.pause(); setPlaying(idx,false); }
+  } else {
+    if(currentTrack>=0){ audioEls[currentTrack].pause(); stopTrack(currentTrack); }
+    audio.play().catch(()=>{});
+    startTrack(idx);
+  }
+}
+
+function startTrack(idx) {
+  currentTrack=idx;
+  document.querySelectorAll('.music-track').forEach((t,i)=>t.classList.toggle('playing',i===idx));
+  document.getElementById('pi'+idx).textContent='❚❚';
+  const audio=audioEls[idx];
+  audio.addEventListener('timeupdate',()=>updateProgress(idx),{passive:true});
+  audio.addEventListener('loadedmetadata',()=>{ document.getElementById('dt'+idx).textContent=fmtTime(audio.duration); });
+  audio.addEventListener('ended',()=>{ stopTrack(idx); if(idx<8) toggleTrack(idx+1); });
+}
+
+function startTrackVisual(idx) {
+  currentTrack=idx;
+  document.querySelectorAll('.music-track').forEach((t,i)=>t.classList.toggle('playing',i===idx));
+  document.getElementById('pi'+idx).textContent='♪';
+}
+
+function stopTrack(idx) {
+  document.querySelectorAll('.music-track').forEach(t=>t.classList.remove('playing'));
+  if(idx>=0){ document.getElementById('pi'+idx).textContent='▶'; }
+  currentTrack=-1;
+}
+
+function setPlaying(idx,playing) {
+  document.getElementById('pi'+idx).textContent=playing?'❚❚':'▶';
+}
+
+function updateProgress(idx) {
+  const audio=audioEls[idx];
+  if(!audio.duration) return;
+  const pct=(audio.currentTime/audio.duration*100).toFixed(1)+'%';
+  document.getElementById('pf'+idx).style.width=pct;
+  document.getElementById('ct'+idx).textContent=fmtTime(audio.currentTime);
+}
+
+function fmtTime(s){ s=Math.floor(s||0); return Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0'); }
+
+function pauseAllAudio() {
+  audioEls.forEach(a=>{ if(!a.paused) a.pause(); });
+  if(currentTrack>=0){ document.getElementById('pi'+currentTrack).textContent='▶'; currentTrack=-1; }
+}
+
+// ══════════ IMAGE GALLERY ══════════
+const PHOTOS = [
+  {src:'img/z7578887369324_436acf7511ca5b77b49d42919af52ef7.jpg',cap:'Kỷ niệm 1'},
+  {src:'img/z7578887383069_72327e5f52e8ad67e3832d619b6e1ac1.jpg',cap:'Kỷ niệm 2'},
+  {src:'img/z7578887406322_570748a265e756a6f054ad8a3f3e1ca6.jpg',cap:'Kỷ niệm 3'},
+  {src:'img/z7578887417546_d1900acfb697f1dc248049cff0e00216.jpg',cap:'Kỷ niệm 4'},
+  {src:'img/z7578887428339_ed4fcd92e2e24aefa1b644c47bb09f9f.jpg',cap:'Kỷ niệm 5'},
+  {src:'img/z7578887447177_260556980f3ab75fa522c5c6072ef3de.jpg',cap:'Kỷ niệm 6'},
+  {src:'img/z7578887469232_0e191c4ee871a770e09ca4a4b1949aca.jpg',cap:'Kỷ niệm 7'},
+  {src:'img/z7578887476184_4a59850574d053e5412681275dd87f7c.jpg',cap:'Kỷ niệm 8'},
+  {src:'img/z7578887502364_813378323822122cb1fbbc4710dc0481.jpg',cap:'Kỷ niệm 9'},
+  {src:'img/z7578887511728_fe1a725844afa30c26ff7948e6433af5.jpg',cap:'Kỷ niệm 10'},
+  {src:'img/z7578887528419_745b5e1bd40130a6b43b69cb61a7c4eb.jpg',cap:'Kỷ niệm 11'},
+  {src:'img/z7578887548446_880ea57afdf475fec4abebf21c41eb33.jpg',cap:'Kỷ niệm 12'},
+  {src:'img/z7578887567698_50662f77cf5b1751392ac60804a35fbe.jpg',cap:'Kỷ niệm 13'},
+  {src:'img/z7578887588720_7ab3e708044338eab2c169ddbeaa2e63.jpg',cap:'Kỷ niệm 14'},
+  {src:'img/z7578887601366_65ae93b975bb963957f8029ca3a2f77a.jpg',cap:'Kỷ niệm 15'},
+  {src:'img/z7578887638286_9c42e2149d9f2e399950943142d77c0a.jpg',cap:'Kỷ niệm 16'},
+  {src:'img/z7578887641054_3560bb3c36a0cce2a58eaf2ec01fbd63.jpg',cap:'Kỷ niệm 17'},
+  {src:'img/z7578887661740_34e6f436347d794e5aeaacd780fd9a27.jpg',cap:'Kỷ niệm 18'},
+  {src:'img/z7578887682933_389d31c8dcdbc4ab24f312f10ebf91d1.jpg',cap:'Kỷ niệm 19'},
+  {src:'img/z7578887695780_8027e95462e45d063ce86676980167d7.jpg',cap:'Kỷ niệm 20'},
+];
+
+function makeThumb(item, idx) {
+  const d=document.createElement('div'); d.className='img-thumb';
+  d.innerHTML = item.src
+    ? `<img src="${item.src}" alt="${item.cap||''}"><div class="img-thumb-overlay">🔍</div>`
+    : `<div class="img-ph">${item.emoji}</div><div class="img-thumb-overlay">🔍</div>`;
+  d.onclick=()=>openLightbox(item, idx);
+  return d;
+}
+
+function buildImageGallery() {
+  const r1=document.getElementById('row1');
+  const r2=document.getElementById('row2');
+  const half=Math.ceil(PHOTOS.length/2);
+  const top=PHOTOS.slice(0,half);
+  const bot=PHOTOS.slice(half);
+
+  // Double for seamless loop
+  [...top,...top].forEach((item,i)=>r1.appendChild(makeThumb(item,i%top.length)));
+  [...bot,...bot].forEach((item,i)=>r2.appendChild(makeThumb(item,i%bot.length)));
+}
+
+function buildTickers() {
+  const msg = '✦ Happy International Women\'s Day ✦ Chúc Mừng Ngày 8 Tháng 3 ';
+  const makeT=(id)=>{
+    const el=document.getElementById(id);
+    let html='';
+    for(let i=0;i<8;i++) html+=`<span>${msg}</span>`;
+    el.innerHTML=html;
+  };
+  makeT('ticker-top'); makeT('ticker-bot');
+}
+
+function openLightbox(item, idx) {
+  const lb=document.getElementById('lightbox');
+  const content=document.getElementById('lb-content');
+  if(item.src){
+    content.outerHTML=`<img class="lb-img" id="lb-content" src="${item.src}" alt="${item.cap||''}">`;
+  } else {
+    content.className='lb-ph'; content.textContent=item.emoji;
+  }
+  lb.classList.add('open');
+  // Hide page back button when viewing image
+  const pageBack = document.querySelector('#page-image .page-back');
+  if(pageBack) pageBack.style.display = 'none';
+}
+function closeLightbox(e) {
+  if(e && e.target!==document.getElementById('lightbox') && !e.target.classList.contains('lb-close')) return;
+  document.getElementById('lightbox').classList.remove('open');
+  // Show page back button again
+  const pageBack = document.querySelector('#page-image .page-back');
+  if(pageBack) pageBack.style.display = 'flex';
+}
+
+// ══════════ GIFT CANVAS ══════════
+let giftCanvasRAF=null, giftOpened=false;
+
+function initGiftCanvas() {
+  if(giftOpened) return;
+  const c=document.getElementById('gift-canvas');
+  const ctx=c.getContext('2d');
+  function resize(){ c.width=innerWidth; c.height=innerHeight; }
+  resize(); window.addEventListener('resize',resize);
+
+  const particles=[];
+  const PETALS=['🌸','🌹','🌷','💕'];
+
+  function makeParticle(){
+    return {
+      x:Math.random()*innerWidth,
+      y:-30-Math.random()*100,
+      vy:Math.random()*1.5+.8,
+      vx:(Math.random()-.5)*.5,
+      emoji:PETALS[Math.floor(Math.random()*PETALS.length)],
+      size:Math.random()*15+12,
+      op:Math.random()*.4+.3,
+    };
+  }
+
+  for(let i=0;i<20;i++){
+    const p=makeParticle(); p.y=Math.random()*innerHeight;
+    particles.push(p);
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    particles.forEach((p,i)=>{
+      p.y+=p.vy; p.x+=p.vx;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.globalAlpha=p.op;
+      ctx.font=`${p.size}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(p.emoji,0,0);
+      ctx.restore();
+      if(p.y>innerHeight+30) particles[i]=Object.assign(makeParticle(),{y:-30});
+    });
+    giftCanvasRAF=requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function stopGiftCanvas(){
+  if(giftCanvasRAF){ cancelAnimationFrame(giftCanvasRAF); giftCanvasRAF=null; }
+  const c=document.getElementById('gift-canvas');
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+}
+
+function openGift(){
+  if(giftOpened) return;
+  giftOpened=true;
+  document.getElementById('bouquet-wrap').classList.add('opened');
+  document.getElementById('gift-btn').classList.add('hidden');
+  document.querySelector('#page-gift .gift-sub').textContent='🌸 Anh tặng em bó hoa này nhé!';
+  if(!giftCanvasRAF) initGiftCanvas();
+}
+</script>
+</body>
+</html>
