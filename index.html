@@ -304,6 +304,15 @@ body{font-family:'Cormorant Garamond',serif;background:var(--dark);color:var(--d
 }
 .page-back:hover{background:rgba(255,255,255,.22);transform:translateX(-3px)}
 
+/* Mobile responsive styling for back button */
+@media (max-width: 768px) {
+  .page-back{
+    top:1rem;left:1rem;
+    padding:.4rem 1rem;
+    font-size:.9rem;
+  }
+}
+
 /* Fix back button position on image page */
 #page-image .page-back{top:4rem}
 
@@ -412,6 +421,10 @@ audio{display:none}
   background:linear-gradient(160deg,#fff5f7 0%,#fff8f5 100%);
   display:flex;align-items:center;justify-content:center;
   min-height:100svh;padding:5rem 1.5rem;
+}
+/* Mobile responsive padding for letter page */
+@media (max-width: 768px) {
+  #page-letter{padding:7rem 1rem 3rem;}
 }
 .letter-wrap{max-width:680px;width:100%}
 .letter-paper{
@@ -546,6 +559,10 @@ audio{display:none}
   min-height:100svh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   overflow:hidden;padding:5rem 2rem;
+}
+/* Mobile responsive padding for gift page */
+@media (max-width: 768px) {
+  #page-gift{padding:7rem 1rem 3rem;}
 }
 #gift-canvas{position:absolute;inset:0;pointer-events:none;z-index:1}
 
